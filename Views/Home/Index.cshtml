@@ -1,4 +1,4 @@
-﻿@model List<Pizza>
+﻿@*@model List<Pizza>*@
 
 <div class="container">
     <div class=" row">
@@ -7,9 +7,9 @@
 
             <h3 class="text-center my-5">Pizze disponibili</h3>
 
-            <div class="d-flex pb-5">
+            <div class="d-flex pb-5 " id="pizza-container">
 
-                @foreach (Pizza item in Model)
+                @*@foreach (Pizza item in Model)
                 {
                     <div class="card" style="width: 18rem;">
                         <img class="card-img-top" src="@item.Image" alt="Card image cap">
@@ -21,9 +21,35 @@
                     </div>
 
 
-                }
+                }*@
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    
+    axios.get("api/Pizza")
+    .then(res => {
+        console.log(res);
+        let container = document.querySelector("#pizza-container");
+        for (let i = 0; i < res.data.length ; i++){
+
+                container.innerHTML += `
+                <div class='card' style='width: 18rem'>
+                    <img class='card-img-top' src = ${res.data[i].image} alt = 'Card image cap' >
+                    <div class='card-body' >
+                        <h5 class='card-title' > ${res.data[i].name}</h5>
+                        <p class='card-text' >${res.data[i].description}</p>
+                            <a href = '#' class='btn btn-primary ' >${res.data[i].price.toFixed(2)} €</a>
+                    </div>
+                </div>
+                `;
+
+        }
+    })
+    .catch( err => 
+        console.log(err)
+    )
+</script>
 

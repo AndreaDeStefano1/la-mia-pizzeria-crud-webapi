@@ -10,8 +10,9 @@ namespace la_mia_pizzeria.Controllers
             using (PizzaContext db = new())
             {
 
-                List<Pizza> pizzaList = db.Pizzas.ToList();
-                return View(pizzaList);
+                //List<Pizza> pizzaList = db.Pizzas.ToList();
+                //return View(pizzaList);
+                return View();
 
             }
 
