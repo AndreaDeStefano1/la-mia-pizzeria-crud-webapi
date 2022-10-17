@@ -17,5 +17,9 @@ namespace la_mia_pizzeria.Controllers
             }
 
         }
+        public IActionResult Details()
+        {
+            return View();
+        }
     }
 }

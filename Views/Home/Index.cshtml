@@ -6,7 +6,8 @@
             <h1>Benvenuto nella nostra pizzeria</h1>
 
             <h3 class="text-center my-5">Pizze disponibili</h3>
-
+            <label for="searchInput">Cerca: </label>
+            <input type="text" id="searchInput" class="my-5" onkeyup=" delay(this.value)" />
             <div class="d-flex pb-5 " id="pizza-container">
 
                 @*@foreach (Pizza item in Model)
@@ -28,28 +29,42 @@
 </div>
 
 <script type="text/javascript">
+    Serach("");
+    let pippo;
+    function delay(string){
+        clearTimeout(pippo)
+        pippo = setTimeout( Search, 2000, string )
+    }
+
     
-    axios.get("api/Pizza")
-    .then(res => {
-        console.log(res);
+    function Search(input){
         let container = document.querySelector("#pizza-container");
-        for (let i = 0; i < res.data.length ; i++){
+        container.innerHTML = "";
+        axios.get("/api/Pizza?name=" + input)
+            .then(res => {
+                console.log(res);
+               
+                for (let i = 0; i < res.data.length; i++) {
 
-                container.innerHTML += `
-                <div class='card' style='width: 18rem'>
-                    <img class='card-img-top' src = ${res.data[i].image} alt = 'Card image cap' >
-                    <div class='card-body' >
-                        <h5 class='card-title' > ${res.data[i].name}</h5>
-                        <p class='card-text' >${res.data[i].description}</p>
-                            <a href = '#' class='btn btn-primary ' >${res.data[i].price.toFixed(2)} €</a>
+                    container.innerHTML += `
+                    <div class='card' style='width: 18rem'>
+                    <a href='Home/Details/${res.data[i].pizzaId}'>
+                        <img class='card-img-top' src = ${res.data[i].image} alt = 'Card image cap' >
+                        <div class='card-body' >
+                            <h5 class='card-title' > ${res.data[i].name}</h5>
+                            <p class='card-text' >${res.data[i].description}</p>
+                                <a href = '#' class='btn btn-primary ' >${res.data[i].price.toFixed(2)} €</a>
+                        </div>
+                        </a>
                     </div>
-                </div>
-                `;
+                    `;
 
-        }
-    })
-    .catch( err => 
-        console.log(err)
-    )
+                }
+            })
+            .catch(err =>
+                console.log(err)
+            )
+    }
+    
 </script>
 

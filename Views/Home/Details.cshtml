@@ -1,0 +1,43 @@
+﻿
+<div class="container">
+    <div class=" row">
+        <div class=" col">
+
+            <div class="d-flex pb-5 " id="pizza-container">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+        let container = document.querySelector("#pizza-container");
+        let id = window.location.pathname.split("/")
+        id = id[id.length - 1]
+        axios.get("/api/Pizza/" + id)
+            .then(res => {
+                console.log(res);
+               
+               
+
+                    container.innerHTML += `
+                    <div class='card' style='width: 18rem'>
+                        <img class='card-img-top' src = ${res.data.image} alt = 'Card image cap' >
+                        <div class='card-body' >
+                            <h5 class='card-title' > ${res.data.name}</h5>
+                            <p class='card-text' >${res.data.description}</p>
+                                <a href = '#' class='btn btn-primary ' >${res.data.price.toFixed(2)} €</a>
+                        </div>
+                    </div>
+                    `;
+
+                
+            })
+            .catch(err =>
+                console.log(err)
+            )
+    
+    
+</script>
+

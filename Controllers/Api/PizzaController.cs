@@ -13,12 +13,32 @@ namespace la_mia_pizzeria.Controllers.Api
         {
             _db = new PizzaContext();
         }
-        [HttpGet]
-        public IActionResult Get()
-        {
-            IQueryable<Pizza> pizzas = _db.Pizzas;
 
-            return Ok(pizzas.ToList());
+        [HttpGet]
+        public IActionResult Get(string? name)
+        {
+            IQueryable<Pizza> pizzas;
+            if (name != null)
+            {
+                name = name.ToLower();
+                pizzas = _db.Pizzas.Where(p => p.Name.ToLower().Contains(name));
+                return Ok(pizzas.ToList());
+            }
+            else
+            {
+                pizzas = _db.Pizzas;
+                return Ok(pizzas.ToList());
+            }
+
+
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            IQueryable<Pizza>  pizza = _db.Pizzas.Where(p=> p.PizzaId == id);
+            return Ok(pizza.FirstOrDefault());
         }
     }
 }
