@@ -41,8 +41,11 @@
 
     
     function SubmitForm(){
-        document.querySelector(".alert").classList.add('d-none');
-
+        document.querySelectorAll(".alert").forEach(el => {
+            el.classList.add('d-none');
+            el.value="";
+        })
+        
         axios.post("/api/Message",{
             name: document.querySelector('#name').value,
             email: document.querySelector('#email').value,
@@ -51,16 +54,25 @@
 
         })
         .then(res => {
-                document.querySelector(".alert .alert-danger").classList.add('d-none');
-                document.querySelector(".form-control").value = "";
+                document.querySelectorAll(".alert").forEach(el => {
+                    el.classList.add('d-none');
+                    
+                })
+                
+                document.querySelectorAll(".form-control").forEach(el => {
+                    el.value = "";
+                })
+                window.location.pathname = "/Home/Recived";
         })
         .catch(error => {
-            let object = error.response.data.errors;
-            for (const property in object) {
-                document.querySelector(`#${property}-error`).classList.remove('d-none');
-                    
-                document.querySelector(`#${property}-error`).innerHTML = object[property];
+            if(error.response){
+                    let object = error.response.data.errors;
+                    for (const property in object) {
+                        document.querySelector(`#${property}-error`).classList.remove('d-none');
 
+                        document.querySelector(`#${property}-error`).innerHTML = object[property];
+
+                    }
             }
         })
     }

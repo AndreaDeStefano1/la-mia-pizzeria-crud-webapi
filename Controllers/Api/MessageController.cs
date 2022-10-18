@@ -31,12 +31,12 @@ namespace la_mia_pizzeria.Controllers.Api
 
         // POST api/<MessageController>
         [HttpPost]
-        public IActionResult Post([FromBody] Message value)
+        public void Post([FromBody] Message value)
         {
             
             _db.Messages.Add(value);
             _db.SaveChanges();
-            return RedirectToAction("Recived","Home");
+            
         }
 
         // PUT api/<MessageController>/5
