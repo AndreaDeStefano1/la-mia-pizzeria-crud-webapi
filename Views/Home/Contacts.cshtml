@@ -1,0 +1,69 @@
+﻿<div class="container">
+    <h1 class="text-center">Contattaci</h1>
+    <div class="row">
+        <div class="col">
+            <form>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nome:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name">
+                    <label for="name" id="Name-error" class="form-text text-muted alert alert-danger d-none">Errore.</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    <label for="email" id="Email-error" class="form-text text-muted alert alert-danger d-none">Errore</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Titolo</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter title">
+                    <label for="title" id="Title-error" class="form-text text-muted alert alert-danger d-none">Errore</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Testo:</label>
+                    <input type="text" class="form-control" id="description" placeholder="Enter message">
+                    <label for="description" id="Description-error" class="form-text text-muted alert alert-danger d-none">Errore</label>
+                </div>
+                
+              
+              <div onclick="SubmitForm()" class="btn btn-primary">Submit</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+   
+
+    
+    function SubmitForm(){
+        document.querySelector(".alert").classList.add('d-none');
+
+        axios.post("/api/Message",{
+            name: document.querySelector('#name').value,
+            email: document.querySelector('#email').value,
+            title: document.querySelector('#title').value,
+            description: document.querySelector('#description').value
+
+        })
+        .then(res => {
+                document.querySelector(".alert .alert-danger").classList.add('d-none');
+                document.querySelector(".form-control").value = "";
+        })
+        .catch(error => {
+            let object = error.response.data.errors;
+            for (const property in object) {
+                document.querySelector(`#${property}-error`).classList.remove('d-none');
+                    
+                document.querySelector(`#${property}-error`).innerHTML = object[property];
+
+            }
+        })
+    }
+    
+</script>
+
